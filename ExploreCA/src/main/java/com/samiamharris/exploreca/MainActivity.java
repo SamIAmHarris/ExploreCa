@@ -15,36 +15,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class MainActivity extends ActionBarActivity {
 
-    public static final String USERNAME = "pref_username";
-    public static final String VIEWIMAGE = "pref_viewimages";
-
-
-    private SharedPreferences settings;
-
-    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //creating shared preferences object
-        //getPreferences method - preferences local to current activity
-        //getSharedPreferences - pass in string identifier. Shared through entire App
-        settings = PreferenceManager.getDefaultSharedPreferences(this);
-
-        //to make sure preferences are shown on app start up
-        MainActivity.this.refreshDisplay(null);
-
-        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                MainActivity.this.refreshDisplay(null);
-
-            }
-        };
-        settings.registerOnSharedPreferenceChangeListener(listener);
+        File f = getFilesDir();
+        String path = f.getAbsolutePath();
+        UIHelper.displayText(this, R.id.bottom_tv, path);
 
     }
 
@@ -69,24 +57,27 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setPreference(View v) {
-        Log.d("TAG", "setPreferences");
+    public void createFile(View v) throws IOException {
+        String text = UIHelper.getText(this, R.id.top_et);
+        FileOutputStream fos = openFileOutput("myfile.txt", MODE_PRIVATE);
+        fos.write(text.getBytes());
+        fos.close();
 
-        Intent intent = new Intent(this, SettingActivity.class);
-        startActivity(intent);
+        UIHelper.displayText(this, R.id.bottom_tv, "File Written To Disk");
 
     }
 
-
-    public void refreshDisplay(View v) {
-        Log.d("TAG", "refreshDisplay()");
-
-        //pass in the String you want, and default value to show if the String isn't there
-        String prefValue = settings.getString(USERNAME, "Not found");
-        UIHelper.displayText(this,R.id.tv_show, prefValue);
-        UIHelper.setCDChecked(this, R.id.check_viewimages, settings.getBoolean(VIEWIMAGE, false));
+    public void readFile(View v) throws IOException{
+        FileInputStream fis = openFileInput("myfile.txt");
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        StringBuffer b = new StringBuffer();
+        while(bis.available() != 0) {
+            char c = (char) bis.read();
+            b.append(c);
+        }
+        UIHelper.displayText(this, R.id.bottom_tv, b.toString());
+        bis.close();
+        fis.close();
     }
-
-
 
 }
