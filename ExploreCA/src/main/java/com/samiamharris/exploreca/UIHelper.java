@@ -27,5 +27,10 @@ public class UIHelper {
         return cb.isChecked();
     }
 
+    public static void setCDChecked(Activity activity, int id, boolean b) {
+        CheckBox cb = (CheckBox) activity.findViewById(id);
+        cb.setChecked(b);
+    }
+
 
 }

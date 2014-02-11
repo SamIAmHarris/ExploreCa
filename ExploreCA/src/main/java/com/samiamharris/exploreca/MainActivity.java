@@ -1,6 +1,8 @@
 package com.samiamharris.exploreca;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -15,11 +17,13 @@ import android.os.Build;
 
 public class MainActivity extends ActionBarActivity {
 
-    public static final String USERNAME = "username";
+    public static final String USERNAME = "pref_username";
+    public static final String VIEWIMAGE = "pref_viewimages";
+
 
     private SharedPreferences settings;
 
-
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,18 @@ public class MainActivity extends ActionBarActivity {
         //creating shared preferences object
         //getPreferences method - preferences local to current activity
         //getSharedPreferences - pass in string identifier. Shared through entire App
-        settings = getPreferences(MODE_PRIVATE);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //to make sure preferences are shown on app start up
+        MainActivity.this.refreshDisplay(null);
+
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                MainActivity.this.refreshDisplay(null);
+
+            }
+        };
+        settings.registerOnSharedPreferenceChangeListener(listener);
 
     }
 
@@ -57,13 +72,8 @@ public class MainActivity extends ActionBarActivity {
     public void setPreference(View v) {
         Log.d("TAG", "setPreferences");
 
-        //Using shared preferences Editor to add SP
-        SharedPreferences.Editor editor = settings.edit();
-        String prefValue = UIHelper.getText(this, R.id.et_username);
-        editor.putString(USERNAME, prefValue);
-        editor.commit();
-        //Displaying the shared preference on the screen
-        UIHelper.displayText(this, R.id.tv_show, "Preference Saved");
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
 
     }
 
@@ -74,6 +84,7 @@ public class MainActivity extends ActionBarActivity {
         //pass in the String you want, and default value to show if the String isn't there
         String prefValue = settings.getString(USERNAME, "Not found");
         UIHelper.displayText(this,R.id.tv_show, prefValue);
+        UIHelper.setCDChecked(this, R.id.check_viewimages, settings.getBoolean(VIEWIMAGE, false));
     }
 
 
