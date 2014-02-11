@@ -80,4 +80,9 @@ public class MainActivity extends ActionBarActivity {
         fis.close();
     }
 
+    public void goToJSON(View v) {
+        Intent JIntent = new Intent(this, JSONActivity.class);
+        startActivity(JIntent);
+    }
+
 }

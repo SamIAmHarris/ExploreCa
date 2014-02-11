@@ -32,6 +32,14 @@
         android:onClick="readFile"
         android:layout_alignParentRight="true"
         android:layout_above="@+id/bottom_tv"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="goToJSON"
+        android:text="Go To JSON"
+        android:layout_below="@+id/top_et"
+        android:layout_marginTop="10dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
