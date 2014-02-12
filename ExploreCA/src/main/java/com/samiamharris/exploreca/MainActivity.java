@@ -81,8 +81,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void goToJSON(View v) {
-        Intent JIntent = new Intent(this, JSONActivity.class);
-        startActivity(JIntent);
+        Intent jIntent = new Intent(this, JSONActivity.class);
+        startActivity(jIntent);
+    }
+
+    public void goToExternal(View v){
+        Intent externalIntent = new Intent(this, ExternalActivity.class);
+        startActivity(externalIntent);
     }
 
 }

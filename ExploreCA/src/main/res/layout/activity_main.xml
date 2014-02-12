@@ -40,6 +40,16 @@
         android:text="Go To JSON"
         android:layout_below="@+id/top_et"
         android:layout_marginTop="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="goToExternal"
+        android:text="Go To External"
+        android:layout_below="@+id/top_et"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

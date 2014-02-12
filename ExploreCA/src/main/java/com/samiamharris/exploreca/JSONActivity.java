@@ -51,7 +51,7 @@ public class JSONActivity extends Activity{
         fos.write(text.getBytes());
         fos.close();
 
-        UIHelper.displayText(this, R.id.j_tv, "File Written to Disk:\n" + data.toString());
+        UIHelper.displayText(this, R.id.j_tv, "File Written to Internal Storage:\n" + data.toString());
 
     }
 
